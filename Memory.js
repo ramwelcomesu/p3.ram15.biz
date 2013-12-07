@@ -60,7 +60,7 @@ var Memory = {
 		// Loop for how many cards we're playing with
 		for(var i = 0; i < how_many_cards; i++) {
 			// Add the card with the image to the array
-			cardsArr[i] = "<div class='card clickable' id='" + random_letter + i +"'> <img src= 'images/" + random_letter + ".PNG'/> </div>";	
+			cardsArr[i] = "<div class='card clickable' id='" + random_letter + i +"' clicked=''> <img src= 'images/" + random_letter + ".png'/> </div>";	
 			
 			//Generate a random letter from  our alphabet array 
 			random_letter = this.alphabet[Math.floor(this.alphabet.length * Math.random())];
@@ -76,7 +76,7 @@ var Memory = {
 
 		// Replace images from the div tages and just have the alphabets. So that string can be used to hide the images.
 		cardsStrCode = cardsStr.replace(/<img src= 'images\//g,"");
-		cardsStrCode = cardsStrCode.replace(/.PNG'\/>/g,"");
+		cardsStrCode = cardsStrCode.replace(/.png'\/>/g,"");
 
 		// Now inject the cards string into the game board
 		this.board.html(cardsStr);
@@ -85,7 +85,6 @@ var Memory = {
 		this.scoreboard.html("Your Score: 0");
 		
 		var newthis = this;
-
 		//to perform an action after 2 seconds of the html page load (hide the images on the cards). 
 		//i could use jQuery "$("#flipbox").flip({" but i wanted to try it in Javascript... 
 		setTimeout(function() {
@@ -94,9 +93,11 @@ var Memory = {
 			newthis.board.html(cardsStrCode);
 
 			//On click of the each card
+			 
 			$('.clickable').on('click', function() {
-				// call choose mu card method
-				Memory.choose_my_card($(this), how_many_cards);
+				if($(this).attr('clicked') != 'yes')
+				newthis.choose_my_card($(this), how_many_cards);
+				$(this).attr('clicked','yes');
 			});
 			
 		}, 1500);  // 2 seconds
@@ -117,7 +118,7 @@ var Memory = {
 		var divIdImage = divId.substr(0,1);
 
 		//add image to the currently selected card's div. 
-		var repStrN = "<img src= 'images/"+divIdImage+".PNG'/> </div>";
+		var repStrN = "<img src= 'images/"+divIdImage+".png'/> </div>";
 		
 		//display the image for the selected card	
 		cardObj.html(repStrN);	
